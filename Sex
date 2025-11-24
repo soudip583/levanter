@@ -1,0 +1,26 @@
+const { bot, getRandom, jidToNum } = require('../lib/')
+
+bot(
+  {
+    pattern: 'sex ?(.*)',
+    fromMe: true,
+    desc: 'random kissed',
+    type: 'fun',
+  },
+  async (message, match) => {
+    let a = message.reply_message.jid || message.mention[0]
+    const b = message.participant
+    if (!a) {
+      const p = await message.groupMetadata(message.jid)
+      a = getRandom(p).id
+    }
+
+    const caption = `@${jidToNum(b)} Kissed @${jidToNum(a)}
+    \n> ⎯꯭̽🍃 ꯭᪳𝐋꯭❍꯭𝐯𝐞꯭֟፝͡𝐫꯭⎯꯭̽🌸𓂃`
+      return await message.sendFromUrl('https://files.catbox.moe/s0uzf0.mp4', {
+      caption,
+      contextInfo: { mentionedJid: [b, a] },
+      gifPlayback: true,
+    })
+  }
+)
